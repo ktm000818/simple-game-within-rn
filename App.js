@@ -1,67 +1,41 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from "./stacks/HomeScreen";
+import { ImageBackground, SafeAreaView, StyleSheet, View } from "react-native";
+import HomeScreen from "./screens/HomeScreen";
+import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
+import GameScreen from "./screens/GameScreen";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+  const [userNumber, setUserNumber] = useState();
+
+  function pickedNumberHandler(pickedNumber) {
+    setUserNumber(pickedNumber);
+  }
+
+  let screen = <HomeScreen getPickedNumber={pickedNumberHandler} />;
+
+  if (userNumber) {
+    screen = <GameScreen />;
+  }
+
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <LinearGradient colors={["#640131", "#ddb52f"]} style={styles.rootContainer}>
+        <ImageBackground imageStyle={styles.backgroundImage} source={require("./assets/images/background.png")} resizeMode="cover" style={styles.rootContainer}>
+          <SafeAreaView style={styles.rootContainer}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  rootContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
-  titleContainer: {
-    padding: 8,
-    borderWidth: 1,
-    borderColor: "#ffffff",
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    color: "#ffffff",
-    padding: 8
-  },
-  inputContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#550823",
-    padding: 16,
-  },
-  description: {
-    fontSize: 18,
-    color: "#ffc400",
-    marginBottom: 10
-  },
-  textInput: {
-    width: 50,
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: "center",
-    color: "#ffc400",
-    borderBottomColor: "#ffc400",
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderWidth: 1,
-  },
-  buttonContainer: {
-    flexDirection: "row",
+  backgroundImage: {
+    opacity: 0.15,
   },
 });
