@@ -1,7 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
+import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
+import Colors from "../constants/colors";
+import Title from "../components/ui/Title";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 
 export default function HomeScreen({ navigation, getPickedNumber = () => {} }) {
   const [quizNum, setQuizNum] = useState("");
@@ -33,16 +37,16 @@ export default function HomeScreen({ navigation, getPickedNumber = () => {} }) {
     <>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Guess My Number!</Text>
+          <Title style={styles.title}>Guess My Number!</Title>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.description}>Enter a Number</Text>
+        <Card>
+          <InstructionText>Enter the Number!</InstructionText>
           <TextInput keyboardType="number-pad" maxLength={2} style={styles.textInput} value={quizNum} onChangeText={handleChangeText} />
           <View style={styles.buttonContainer}>
-            <PrimaryButton title="Reset" onPressButton={handleResetText} />
-            <PrimaryButton title="Confirm" onPressButton={handleStartGame} />
+            <PrimaryButton onPressButton={handleResetText}>Reset</PrimaryButton>
+            <PrimaryButton onPressButton={handleStartGame}>Confirm</PrimaryButton>
           </View>
-        </View>
+        </Card>
       </View>
     </>
   );
@@ -56,38 +60,19 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginTop: 100,
     padding: 8,
-    borderWidth: 1,
-    borderColor: "#ffffff",
     marginBottom: 24,
   },
   title: {
     fontSize: 24,
-    color: "#ffffff",
     padding: 8,
-  },
-  inputContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#550823",
-    padding: 16,
-    elevation: 10,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 1,
-  },
-  description: {
-    fontSize: 18,
-    color: "#ffc400",
-    marginBottom: 10,
   },
   textInput: {
     width: 50,
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    color: "#ffc400",
-    borderBottomColor: "#ffc400",
+    color: Colors.secondary500,
+    borderBottomColor: Colors.secondary500,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
