@@ -15,6 +15,7 @@ export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(false);
+  const [attemptRounds, setAttemptRounds] = useState(0);
 
   useEffect(() => {
     async function prepare() {
@@ -43,12 +44,22 @@ export default function App() {
     setUserNumber(pickedNumber);
   }
 
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setGameIsOver(false);
+    setAttemptRounds(0);
+  }
+
+  function getAttemptsHandler(attempts){
+    setAttemptRounds(attempts);
+  }
+
   let screen = <HomeScreen getPickedNumber={pickedNumberHandler} />;
   if (userNumber) {
-    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />;
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} getAttempts={getAttemptsHandler}/>;
   }
   if (gameIsOver) {
-    screen = <GameOverScreen />;
+    screen = <GameOverScreen userNumber={userNumber} roundsNumber={attemptRounds} onStartNewGame={startNewGameHandler} />;
   }
 
   function gameOverHandler() {

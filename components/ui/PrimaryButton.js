@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   buttonInnerContainer: {
-    width: 100,
+    minWidth: 100,
     backgroundColor: Colors.primary500,
     padding: 8,
     paddingHorizontal: 24,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   buttonText: {
-    color: Colors.secondary500,
+    color: '#ffffff',
     textAlign: "center",
   },
 });
