@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import Colors from "../../constants/colors";
 
 export default function NumberContainer({ children }) {
@@ -9,19 +9,22 @@ export default function NumberContainer({ children }) {
   );
 }
 
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
   container: {
     borderWidth: 4,
     borderColor: Colors.secondary500,
-    padding: 24,
+    padding: deviceWidth < 380 ? 12 : 24,
+    margin: deviceWidth < 380 ? 12 : 24,
     borderRadius: 8,
-    margin: 24,
     alignItems: "center",
   },
   nubmerText: {
     fontFamily: "open-sans-bold",
     color: Colors.secondary500,
-    fontSize: 36,
+    fontSize: deviceWidth < 380 ? 28 : 36,
     fontWeight: "bold",
   },
 });

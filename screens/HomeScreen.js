@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Dimensions, StyleSheet, Text, TextInput, View, useWindowDimensions, KeyboardAvoidingView, ScrollView } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
 import Colors from "../constants/colors";
@@ -9,6 +9,7 @@ import InstructionText from "../components/ui/InstructionText";
 
 export default function HomeScreen({ navigation, getPickedNumber = () => {} }) {
   const [quizNum, setQuizNum] = useState("");
+  const { width, height } = useWindowDimensions();
 
   const handleChangeText = (text) => {
     setQuizNum(text);
@@ -20,12 +21,8 @@ export default function HomeScreen({ navigation, getPickedNumber = () => {} }) {
 
   const handleStartGame = () => {
     let enteredQuizNum = parseInt(quizNum);
-    if(isNaN(enteredQuizNum) ||enteredQuizNum > 99 || enteredQuizNum <= -1) {
-      Alert.alert(
-        "Invalid number!", 
-        "Number has to be a number betwwen 1 and 99.", 
-        [{ text: "OK", style: "destructive", onPress: handleResetText}]
-      );
+    if (isNaN(enteredQuizNum) || enteredQuizNum > 99 || enteredQuizNum <= -1) {
+      Alert.alert("Invalid number!", "Number has to be a number betwwen 1 and 99.", [{ text: "OK", style: "destructive", onPress: handleResetText }]);
       return;
     }
 
@@ -33,32 +30,40 @@ export default function HomeScreen({ navigation, getPickedNumber = () => {} }) {
     getPickedNumber(enteredQuizNum);
   };
 
+  const marginTop = height < 400 ? 30 : 100;
+
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Title style={styles.title}>Guess My Number!</Title>
-        </View>
-        <Card>
-          <InstructionText>Enter the Number!</InstructionText>
-          <TextInput keyboardType="number-pad" maxLength={2} style={styles.textInput} value={quizNum} onChangeText={handleChangeText} />
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPressButton={handleResetText}>Reset</PrimaryButton>
-            <PrimaryButton onPressButton={handleStartGame}>Confirm</PrimaryButton>
+      <ScrollView style={styles.screen}>
+        <KeyboardAvoidingView style={styles.screen} behavior="position">
+          <View style={[styles.container, { marginTop }]}>
+            <View style={styles.titleContainer}>
+              <Title style={styles.title}>Guess My Number!</Title>
+            </View>
+            <Card>
+              <InstructionText>Enter the Number!</InstructionText>
+              <TextInput keyboardType="number-pad" maxLength={2} style={styles.textInput} value={quizNum} onChangeText={handleChangeText} />
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPressButton={handleResetText}>Reset</PrimaryButton>
+                <PrimaryButton onPressButton={handleStartGame}>Confirm</PrimaryButton>
+              </View>
+            </Card>
           </View>
-        </Card>
-      </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   container: {
     alignItems: "center",
     justifyContent: "center",
   },
   titleContainer: {
-    marginTop: 100,
     padding: 8,
     marginBottom: 24,
   },
